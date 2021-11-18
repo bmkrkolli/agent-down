@@ -2,5 +2,5 @@
 - hosts: all
   tasks:
   - name: systemd_start_service
-    include_tasks: /tasks/main.yml
+    include_tasks: ./tasks/main.yml
     when: call_role
