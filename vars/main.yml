@@ -1,5 +1,2 @@
 ---
-t_role: "{{ hostvars['localhost']['role_name']['stdout'] }}"
-itemv: "{{ Item }}"
-keyv: "{{ Key }}"
 os_type: "{{ ansible_facts['os_family'] }}"
