@@ -7,3 +7,10 @@
   - name: agent-down
     include_tasks: ./tasks/main.yml
     when: call_role
+  - debug:
+      msg: "{{ inventory_hostname }} : {{ job_msg }}"
+  - name: stats
+    set_stats: 
+      data:
+        job_status: "{{ inventory_hostname }} : {{ job_msg }}"
+    ignore_errors: true
