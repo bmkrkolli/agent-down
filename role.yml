@@ -2,5 +2,8 @@
 - hosts: all
   tasks:
   - name: agent-down
+    include_vars: ./vars/main.yml
+    when: call_role
+  - name: agent-down
     include_tasks: ./tasks/main.yml
     when: call_role
