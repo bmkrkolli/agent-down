@@ -1,0 +1,11 @@
+---
+- hosts: all
+  tasks:
+  - debug:
+      msg: "call_role Variable is not defined."
+    when: call_role is undefined
+
+  - name: systemd_start_service
+    include_role:
+      name: agent-down
+    when: call_role
