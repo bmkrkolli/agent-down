@@ -1,0 +1,13 @@
+---
+# Call Respective Platform tasks
+- name: "Windows Zabbix Agent"
+  include_tasks: windows.yml
+  when: os_type == "Windows"
+
+- name: "Linux Zabbix Agent"
+  include_tasks: linux.yml
+  when: os_type != "Windows" and os_type != "Suse"
+
+- name: "Suse Zabbix Agent"
+  include_tasks: suse.yml
+  when: os_type != "Windows" and os_type == "Suse"

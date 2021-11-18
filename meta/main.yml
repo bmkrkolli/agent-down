@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Krishna Reddy Kolli
+  role_name: agent-down
+  description: Starts Monitoring Agent Service
+  min_ansible_version: 2.9
+  platforms:
+  - name: Windows
+  - name: Linux
+    versons:
+    - all
+  galaxy_tags:
+  - monitoring
+  - service
+dependencies: []

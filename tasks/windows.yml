@@ -1,0 +1,45 @@
+---
+# Windows Zabbix Agent Service Start
+- name: 'Get Zabbix Agent Service Status'
+  win_shell: >-
+    Get-Service | ?{$_.Name -eq "Zabbix Agent"} | %{Write-host "Name:"$_.Name";Status:"$_.Status}
+  changed_when: false
+  register: service_output
+  ignore_errors: true
+
+- name: 'Start Zabbix Agent Service'
+  win_shell: >-
+    Get-Service | ?{$_.Name -eq "Zabbix Agent"} | Start-Service;
+    Get-Service | ?{$_.Name -eq "Zabbix Agent"} | %{Write-host "Name:"$_.Name";Status:"$_.Status}
+  register: start_output
+  changed_when: "'Running' in start_output.stdout"
+  when: "'Running' not in service_output.stdout"
+  ignore_errors: true
+
+# Set Return values in job_msg for feedback
+- name: Set auto recovered in job_msg for feedback
+  set_fact:
+    job_msg: >-
+      Zabbix Agent Service is already Running.
+      {{ service_output.stdout }}
+    job_rc: Auto-Recovered
+  when: "'Running' in service_output.stdout"
+  ignore_errors: true
+
+- name: Set resolved in job_msg for feedback
+  set_fact:
+    job_msg: >-
+      Zabbix Agent Service is Started Successfully.
+      {{ start_output.stdout }}
+    job_rc: Resolved
+  when: "'Running' in start_output.stdout"
+  ignore_errors: true
+
+- name: Set failed in job_msg for feedback
+  set_fact:
+    job_msg: >-
+      Error in Starting Zabbix Agent Service.
+      {{ start_output | to_yaml }}
+    job_rc: Failed
+  when: start_output.failed or start_output.stdout == ""
+  ignore_errors: true
